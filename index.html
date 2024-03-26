@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            background-image: url('caminhao.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #mapContainer {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .map-info {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Login</h1>
+        </div>
+
+        <div id="loginForm">
+            <form>
+                <div class="form-group">
+                    <label for="username">Usuário:</label>
+                    <input type="text" id="username" name="username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha:</label>
+                    <input type="password" id="password" name="password">
+                </div>
+                <button type="button" onclick="checkLogin()">Login</button>
+            </form>
+        </div>
+
+        <div id="mapContainer">
+            <div class="map-info">
+                <h2>Último Login:</h2>
+                <p id="lastLoginUser"></p>
+                <p id="lastLoginTime"></p>
+            </div>
+            <div id="googleMapContainer">
+                <h1>Mapa do Google</h1>
+                <p>Aqui está um mapa do Google incorporado:</p>
+                <iframe id="googleMap" src="" width="100%" height="400" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Função para verificar o estado de login ao carregar a página
+        window.onload = function() {
+            var isLoggedIn = localStorage.getItem('isLoggedIn');
+
+            if (isLoggedIn === 'true') {
+                showMap(); // Exibe o mapa
+            }
+        };
+
+        // Função para fazer login
+        function checkLogin() {
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+
+            // Verificação de usuário e senha
+            if ((username === 'usuario' && password === 'senha') || (username === 'admin' && password === 'admin')) {
+                // Armazena o estado de login no localStorage
+                localStorage.setItem('isLoggedIn', 'true');
+                showMap(); // Exibe o mapa
+            } else {
+                alert('Usuário ou senha incorretos');
+            }
+        }
+
+        // Função para exibir o mapa
+        function showMap() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('mapContainer').style.display = 'block';
+            document.getElementById('googleMap').src = "https://www.google.com/maps/d/embed?mid=1K0uOcmab0fWJEAGwGI2Gg58aCtspNwRs&ehbc=2E312F";
+
+            // Atualizar informações do último login
+            var currentDate = new Date();
+            var currentTime = currentDate.toLocaleTimeString();
+            document.getElementById('lastLoginUser').innerText = 'Usuário: ' + localStorage.getItem('lastLoginUser');
+            document.getElementById('lastLoginTime').innerText = 'Hora do Login: ' + currentTime;
+
+            // Armazenar informações do último login no armazenamento local
+            localStorage.setItem('lastLoginTime', currentTime);
+        }
+    </script>
+</body>
+</html>
